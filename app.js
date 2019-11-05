@@ -316,6 +316,7 @@ const resolvers = {
       if(authorsData.some(obj => obj.name === nombre)){
 
         //Eliminar Autor
+        
         let result = authorsData.find(obj => obj.name === nombre);
         var index = authorsData.indexOf(result);
 
@@ -325,34 +326,27 @@ const resolvers = {
 
         //Eliminar Recetas
 
-        result = recipesData.filter(obj => obj.author === nombre);
         
-        receta = result.title;
-        // index = recipesData.indexOf(result);
-        // if (index > -1) {
-        //   recipesData.splice(index, 1);
-        // }
+        for(var i = 0; i < recipesData.length; i++){
 
-        for(var i = 0; i < recipesData.length; i++){ 
+          if (recipesData[i].author === nombre) {
 
-          if (recipesData[i].title === receta) {
-            ingredientsData.splice(i, 1); 
+            var receta = recipesData[i].title;
+
+            recipesData.splice(i, 1); 
             i--;
+
+            for(var j = 0; j < ingredientsData.length; j++){ 
+
+              if (ingredientsData[j].recipe === receta) {
+                ingredientsData.splice(j, 1); 
+                j--;
+              }
+  
+            }
+          
           }
-
         }
-        
-        //Eliminar Ingredientes
-
-        for(var i = 0; i < ingredientsData.length; i++){ 
-
-          if (ingredientsData[i].recipe === receta) {
-            ingredientsData.splice(i, 1); 
-            i--;
-          }
-
-        }
-
 
         return ("Eliminado con Exito");
 
@@ -361,9 +355,6 @@ const resolvers = {
         return ("No existe");
 
       }
-
-
-
       
     },
     remove_ingredient(parent, args, ctx, info){
