@@ -336,6 +336,7 @@ const resolvers = {
             recipesData.splice(i, 1); 
             i--;
 
+            //Eliminar Ingredientes
             for(var j = 0; j < ingredientsData.length; j++){ 
 
               if (ingredientsData[j].recipe === receta) {
@@ -358,8 +359,28 @@ const resolvers = {
       
     },
     remove_ingredient(parent, args, ctx, info){
-      //name:String!
-      //return String
+      
+      const ingrediente = args.name;
+
+      if(ingredientsData.some(obj => obj.name === ingrediente)){
+
+        for(var i = 0; i < ingredientsData.length; i++){ 
+
+          if (ingredientsData[i].name === ingrediente) {
+            ingredientsData.splice(i, 1); 
+            i--;
+          }
+
+        }
+
+        return ("Eliminado con Exito");
+
+      }else{
+
+        return ("No existe");
+
+      }
+
     },
 
   },
