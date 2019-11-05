@@ -1,7 +1,5 @@
 import { GraphQLServer} from 'graphql-yoga';
 
-
-
 const recipesData = [{
 
   title: "Sandwich Mixto",
@@ -15,8 +13,7 @@ const authorsData = [{
 
   name: "Arguiñano",
   mail: "Arguiñano@gmail.com"
-  //lista_de_recetas = []
-
+  
 }];
 const ingredientsData = [{
 
@@ -32,7 +29,7 @@ const typeDefs = `
     title: String!
     description: String!
     date: String!
-    author: String!
+    author: [Author!]
     ingredients:[Ingredient!]
 
   }
@@ -48,7 +45,7 @@ const typeDefs = `
   type Ingredient{
 
     name: String!
-    recipe: String!
+    recipe: [Recipe!]
 
   }
 
@@ -98,7 +95,15 @@ const resolvers = {
 
     },
 
-  
+    author:(parent, args, ctx, info)=>{
+
+      const author_name = parent.author;
+
+      return authorsData.filter(obj => obj.name == author_name);
+
+
+    },
+
   },
 
   Author:{
@@ -113,6 +118,17 @@ const resolvers = {
 
   },
 
+  Ingredient:{
+
+    recipe: (parent, args, ctx, info)=>{
+
+      const name = parent.recipe;
+
+      return recipesData.filter(obj => obj.title == name);
+
+    },
+
+  },
 
   Query:{
 
@@ -224,7 +240,15 @@ const resolvers = {
 
       
       recipesData.push(recipe);
-      return recipe;
+
+      const rec= {
+
+        title,
+        description,
+        date, 
+        
+      }
+      return rec;
 
     },
 
@@ -245,7 +269,14 @@ const resolvers = {
         }
   
         ingredientsData.push(ingredient);
-        return ingredient;
+
+        const ingr = {
+
+          name
+
+        }
+
+        return ingr;
 
       }else{
         
@@ -258,6 +289,48 @@ const resolvers = {
     remove_recipe(parent, args, ctx, info){
       //title:String!
       //return String
+
+      const receta = args.title;
+
+      if(recipesData.some(obj => obj.title === receta)){//Devuelve true o false
+
+        //Eliminar Recetas
+
+        let result = recipesData.find(obj => obj.title === receta);
+
+        var index = recipesData.indexOf(result);
+
+        if (index > -1) {
+          recipesData.splice(index, 1);
+        }
+
+        //Eliminar Ingredientes
+
+        let result2 = ingredientsData.find(obj => obj.recipe === receta);
+
+        var index2 = [];
+
+        result2.forEach((elem) =>{
+ 
+          index2.push(result2.indexOf(elem));
+          
+        });
+
+        index2.forEach((elem) =>{
+
+          if (elem > -1) {
+            ingredientsData.splice(elem, 1);
+          }
+
+        });
+
+        return ("Eliminado con Exito");
+
+      }else{
+
+        return ("No existe");
+
+      }
 
     },
     remove_author(parent, args, ctx, info){
