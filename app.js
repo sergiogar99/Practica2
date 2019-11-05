@@ -240,15 +240,7 @@ const resolvers = {
 
       
       recipesData.push(recipe);
-
-      const rec= {
-
-        title,
-        description,
-        date, 
-        
-      }
-      return rec;
+      return recipe;
 
     },
 
@@ -270,13 +262,7 @@ const resolvers = {
   
         ingredientsData.push(ingredient);
 
-        const ingr = {
-
-          name
-
-        }
-
-        return ingr;
+        return ingredient;
 
       }else{
         
@@ -287,17 +273,14 @@ const resolvers = {
     },
 
     remove_recipe(parent, args, ctx, info){
-      //title:String!
-      //return String
-
+     
       const receta = args.title;
 
-      if(recipesData.some(obj => obj.title === receta)){//Devuelve true o false
-
+      if(recipesData.some(obj => obj.title === receta)){
         //Eliminar Recetas
 
         let result = recipesData.find(obj => obj.title === receta);
-
+        
         var index = recipesData.indexOf(result);
 
         if (index > -1) {
@@ -306,23 +289,16 @@ const resolvers = {
 
         //Eliminar Ingredientes
 
-        let result2 = ingredientsData.find(obj => obj.recipe === receta);
 
-        var index2 = [];
+        for(var i = 0; i < ingredientsData.length; i++){ 
 
-        result2.forEach((elem) =>{
- 
-          index2.push(result2.indexOf(elem));
-          
-        });
-
-        index2.forEach((elem) =>{
-
-          if (elem > -1) {
-            ingredientsData.splice(elem, 1);
+          if (ingredientsData[i].recipe === receta) {
+            ingredientsData.splice(i, 1); 
+            i--;
           }
 
-        });
+        }
+
 
         return ("Eliminado con Exito");
 
@@ -334,8 +310,60 @@ const resolvers = {
 
     },
     remove_author(parent, args, ctx, info){
-      //name:String!
-      //return String
+      
+      const nombre = args.name;
+
+      if(authorsData.some(obj => obj.name === nombre)){
+
+        //Eliminar Autor
+        let result = authorsData.find(obj => obj.name === nombre);
+        var index = authorsData.indexOf(result);
+
+        if (index > -1) {
+          authorsData.splice(index, 1);
+        }
+
+        //Eliminar Recetas
+
+        result = recipesData.filter(obj => obj.author === nombre);
+        
+        receta = result.title;
+        // index = recipesData.indexOf(result);
+        // if (index > -1) {
+        //   recipesData.splice(index, 1);
+        // }
+
+        for(var i = 0; i < recipesData.length; i++){ 
+
+          if (recipesData[i].title === receta) {
+            ingredientsData.splice(i, 1); 
+            i--;
+          }
+
+        }
+        
+        //Eliminar Ingredientes
+
+        for(var i = 0; i < ingredientsData.length; i++){ 
+
+          if (ingredientsData[i].recipe === receta) {
+            ingredientsData.splice(i, 1); 
+            i--;
+          }
+
+        }
+
+
+        return ("Eliminado con Exito");
+
+      }else{
+
+        return ("No existe");
+
+      }
+
+
+
       
     },
     remove_ingredient(parent, args, ctx, info){
