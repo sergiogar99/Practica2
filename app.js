@@ -1,6 +1,7 @@
 import { GraphQLServer} from 'graphql-yoga';
 
 
+
 const recipesData = [{
 
   title: "Sandwich Mixto",
@@ -51,14 +52,6 @@ const typeDefs = `
 
   }
 
-  type Mutation{
-
-    addRecipe(title:String!,description:String!,author:String!,ingredients:[String!]):Recipe!
-    addAuthor(name:String!,mail:String!):Author!
-    addIngredient(name:String!,recipe:String!):Ingredient!
-
-  }
-
   type Query{
 
     list_recipes: [Recipe!]
@@ -67,9 +60,32 @@ const typeDefs = `
 
     recipes_author(name:String!):[Author!]
     recipes_ingredient(ingredient:String!):[Ingredient!]
+  }
+
+  type Mutation{
+
+    addRecipe(title:String!,description:String!,author:String!,ingredients:[String!]):Recipe!
+    addAuthor(name:String!,mail:String!):Author!
+    addIngredient(name:String!,recipe:String!):Ingredient!
+
+    remove_recipe(title:String!):String!
+    remove_author(name:String!):String!
+    remove_ingredient(name:String!):String!
+
+    update_author:Author!
+    update_recipe:Recipe!
+    update_ingredient:Ingredient!
 
   }
   `
+  // Borrar una receta.
+  // Borrar un autor. Al borrar un autor, se borran todas sus recetas.
+  // Borrar un ingrediente. Al borrar un ingrediente, se borran todas las recetas que lo contengan.
+  // Actualizar datos de un autor.
+  // Actualizar datos de una receta.
+  // Actualizar datos de un ingrediente.
+
+
 const resolvers = {
 
   Recipe:{
@@ -96,6 +112,7 @@ const resolvers = {
     },
 
   },
+
 
   Query:{
 
@@ -236,6 +253,21 @@ const resolvers = {
 
       }
 
+    },
+
+    remove_recipe(parent, args, ctx, info){
+      //title:String!
+      //return String
+
+    },
+    remove_author(parent, args, ctx, info){
+      //name:String!
+      //return String
+      
+    },
+    remove_ingredient(parent, args, ctx, info){
+      //name:String!
+      //return String
     },
 
   },
