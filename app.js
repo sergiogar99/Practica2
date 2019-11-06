@@ -69,19 +69,13 @@ const typeDefs = `
     remove_author(name:String!):String!
     remove_ingredient(name:String!):String!
 
-    update_author:Author!
-    update_recipe:Recipe!
-    update_ingredient:Ingredient!
+
+    update_author(name:String,mail:String):Author
+    update_recipe(title:String,description:String,author:String,ingredients:[String!]):Recipe
+    update_ingredient(name:String,recipe:String):Ingredient
 
   }
   `
-  // Borrar una receta.
-  // Borrar un autor. Al borrar un autor, se borran todas sus recetas.
-  // Borrar un ingrediente. Al borrar un ingrediente, se borran todas las recetas que lo contengan.
-  // Actualizar datos de un autor.
-  // Actualizar datos de una receta.
-  // Actualizar datos de un ingrediente.
-
 
 const resolvers = {
 
@@ -380,6 +374,37 @@ const resolvers = {
         return ("No existe");
 
       }
+
+
+    },
+
+    update_author(parent, args, ctx, info){
+
+      if(args.mail){
+
+        const nombre = args.name;
+
+        if(authorsData.some(obj => obj.name === nombre)){
+
+          let result = authorsData.find(obj => obj.name === nombre);
+
+          var index = authorsData.indexOf(result);
+
+          authorsData[index].mail = args.mail;
+
+          return authorsData.find(obj => obj.name == nombre);
+
+        }
+      }
+      
+    },
+    
+    update_recipe(parent, args, ctx, info){
+
+
+    },
+    update_ingredient(parent, args, ctx, info){
+
 
     },
 
