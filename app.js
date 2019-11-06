@@ -70,9 +70,9 @@ const typeDefs = `
     remove_ingredient(name:String!):String!
 
 
-    update_author(name:String,mail:String):Author
-    update_recipe(title:String,description:String,author:String,ingredients:[String!]):Recipe
-    update_ingredient(name:String,recipe:String):Ingredient
+    update_author(name:String!,mail:String):Author
+    update_recipe(title:String!,description:String,author:String,ingredients:[String!]):Recipe
+    update_ingredient(name:String!,recipe:String):Ingredient
 
   }
   `
@@ -396,15 +396,35 @@ const resolvers = {
 
         }
       }
-      
+
     },
     
     update_recipe(parent, args, ctx, info){
 
 
+
     },
     update_ingredient(parent, args, ctx, info){
 
+     
+
+      const ingrediente = args.name;
+
+      if(args.recipe){
+
+        if(ingredientsData.some(obj => obj.name === ingrediente)){
+
+        let result = ingredientsData.find(obj => obj.name === ingrediente);
+
+        var index = ingredientsData.indexOf(result);
+
+        ingredientsData[index].recipe = args.recipe;
+
+        return ingredientsData.find(obj => obj.name == ingrediente);
+
+        }
+
+      }
 
     },
 
