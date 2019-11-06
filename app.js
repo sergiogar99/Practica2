@@ -158,6 +158,8 @@ const resolvers = {
 
   Mutation:{
 
+    //Añadir
+
     addAuthor(parent, args, ctx, info){
 
       //Listo
@@ -187,7 +189,6 @@ const resolvers = {
       return author;
 
     },
-
     addRecipe(parent, args, ctx, info){
 
       //Listo
@@ -238,7 +239,6 @@ const resolvers = {
       return recipe;
 
     },
-
     addIngredient(parent, args, ctx, info){
 
       //Solo se puedan añadir ingredientes a recetas ya creadas
@@ -266,6 +266,8 @@ const resolvers = {
       }
 
     },
+
+    //Borrar
 
     remove_recipe(parent, args, ctx, info){
      
@@ -379,7 +381,11 @@ const resolvers = {
 
     },
 
+    //Actualizar
+
     update_author(parent, args, ctx, info){
+
+      //Cambair mail del autor
 
       if(args.mail){
 
@@ -399,10 +405,7 @@ const resolvers = {
       }
 
     },
-    
     update_recipe(parent, args, ctx, info){
-
-      //title:String!,description:String,author:String,ingredients:[String!]
 
       const receta = args.title;
 
@@ -449,6 +452,7 @@ const resolvers = {
     },
     update_ingredient(parent, args, ctx, info){
 
+      //Cambiar de Receta al Ingrediente
       
       const ingrediente = args.name;
 
