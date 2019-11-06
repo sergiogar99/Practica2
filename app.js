@@ -213,7 +213,8 @@ const resolvers = {
         title,
         description,
         date, 
-        author
+        author,
+        ingredients
         
       }
 
@@ -401,13 +402,54 @@ const resolvers = {
     
     update_recipe(parent, args, ctx, info){
 
+      //title:String!,description:String,author:String,ingredients:[String!]
 
+      const receta = args.title;
+
+      if(recipesData.some(obj => obj.title === receta)){
+
+        let result = recipesData.find(obj => obj.title === receta);
+        var index = recipesData.indexOf(result);
+
+        if(args.description){
+
+          recipesData[index].description = args.description;
+
+        }
+        if(args.author){
+
+          recipesData[index].author = args.author;
+
+        }
+        if(args.ingredients){
+
+          //Eliminar Ingredientes          
+          for(var i = 0; i < ingredientsData.length; i++){ 
+            if (ingredientsData[i].recipe === receta) {
+              ingredientsData.splice(i, 1); 
+              i--;
+            }
+          }
+          //Añadir Ingredientes
+          const array = args.ingredients;
+          array.forEach((elem) =>{
+          const ingredient_l = {
+            name:elem,
+            recipe:receta
+          }
+          ingredientsData.push(ingredient_l);
+            
+          });
+
+        }
+
+        return recipesData.find(obj => obj.title == receta);
+      }
 
     },
     update_ingredient(parent, args, ctx, info){
 
-     
-
+      
       const ingrediente = args.name;
 
       if(args.recipe){
