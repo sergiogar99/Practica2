@@ -6,7 +6,7 @@ const recipesData = [{
   description: "Hacemos un sandwich de Jamón y Queso, y lo introducimos en la Sandwichera, fácil y sencillo.",
   date: "01/01/0000",
   author: "Arguiñano",
-  ingredients: ["Jamon,Queso,Pan"]
+  ingredients: ["Jamon","Queso","Pan"]
 
 }];
 const authorsData = [{
@@ -16,11 +16,18 @@ const authorsData = [{
   
 }];
 const ingredientsData = [{
-
   name: "Jamon",
   recipe: "Sandwich Mixto"
-
+},
+{
+  name: "Queso",
+  recipe: "Sandwich Mixto"
+},
+{
+  name: "Pan",
+  recipe: "Sandwich Mixto"
 }];
+
 
 const typeDefs = `
 
@@ -29,7 +36,7 @@ const typeDefs = `
     title: String!
     description: String!
     date: String!
-    author: [Author!]
+    author: Author!
     ingredients:[Ingredient!]
 
   }
@@ -93,8 +100,7 @@ const resolvers = {
 
       const author_name = parent.author;
 
-      return authorsData.filter(obj => obj.name == author_name);
-
+      return authorsData.find(obj => obj.name == author_name);
 
     },
 
