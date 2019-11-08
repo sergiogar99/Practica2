@@ -38,7 +38,6 @@ const typeDefs = `
     date: String!
     author: Author!
     ingredients:[Ingredient!]
-
   }
 
   type Author{
@@ -46,14 +45,12 @@ const typeDefs = `
     name: String!
     mail: String!
     recipes: [Recipe!]
-
   }
 
   type Ingredient{
 
     name: String!
     recipe: [Recipe!]
-
   }
 
   type Query{
@@ -80,10 +77,8 @@ const typeDefs = `
     update_author(name:String!,mail:String):Author
     update_recipe(title:String!,description:String,author:String,ingredients:[String!]):Recipe
     update_ingredient(name:String!,recipe:String):Ingredient
-
   }
   `
-
 const resolvers = {
 
   Recipe:{
@@ -111,9 +106,8 @@ const resolvers = {
     recipes: (parent, args, ctx, info)=>{
 
       const name = parent.name;
-
       return recipesData.filter(obj => obj.author == name);
-
+      
     },
 
   },
@@ -153,7 +147,6 @@ const resolvers = {
       return authorsData.filter(obj => obj.name == name);
 
     },
-
     recipes_ingredient(parent, args, ctx, info){
 
       return ingredientsData.filter(obj => obj.name == args.ingredient);
@@ -165,7 +158,6 @@ const resolvers = {
   Mutation:{
 
     //Añadir
-
     addAuthor(parent, args, ctx, info){
 
       //Listo
@@ -274,7 +266,6 @@ const resolvers = {
     },
 
     //Borrar
-
     remove_recipe(parent, args, ctx, info){
      
       const receta = args.title;
@@ -388,7 +379,6 @@ const resolvers = {
     },
 
     //Actualizar
-
     update_author(parent, args, ctx, info){
 
       //Cambair mail del autor
@@ -481,8 +471,6 @@ const resolvers = {
     },
 
   },
-
 }
-
 const server = new GraphQLServer({typeDefs, resolvers})
 server.start({port: "3007"})
